@@ -188,3 +188,12 @@ currently_architecting:
 </p>
 
 </div>
+
+## Licensing and attribution
+
+- **Original code and software:** MIT License — see [LICENSE](LICENSE).
+- **Original documentation, learning notes, and architecture diagrams:** CC BY 4.0 — see [LICENSE-DOCS.md](LICENSE-DOCS.md).
+- **Third-party material:** Cloud-provider names, trademarks, product screenshots, excerpts, icons, images, fonts, and other third-party content are not relicensed by this repository. Follow the original owner's terms and the attribution/source notices in the relevant files.
+
+These licenses apply only to original material that the repository owner has the right to license. If a file contains a more specific license or attribution notice, follow that notice.
+
