@@ -197,3 +197,18 @@ currently_architecting:
 
 These licenses apply only to original material that the repository owner has the right to license. If a file contains a more specific license or attribution notice, follow that notice.
 
+
+---
+
+## Licensing and permitted use
+
+This repository is provided for personal learning, portfolio review, and other **noncommercial use only**. Commercial or business use requires prior written permission.
+
+- **Documentation, learning notes and original diagrams:** [CC BY-NC 4.0](LICENSE-DOCS.md).
+- **Code, scripts, automation and infrastructure-as-code:** [PolyForm Noncommercial 1.0.0](LICENSE-CODE.md).
+- **Commercial use:** Not permitted without a separate written commercial licence. This includes business use, paid training or consulting, commercial hosting, resale, and incorporation into a commercial product or service.
+- **Third-party material:** Provider names, trademarks, vendor documentation, screenshots, excerpts, icons, images, fonts and dependencies are not relicensed here. Their owners' terms apply.
+
+These terms apply only to original material the repository owner has the right to license. This is source-available, not OSI-approved open-source software.
+
+**Legacy licence notice:** Earlier repository versions may have carried MIT and/or CC BY grants. This update does not retroactively revoke permissions already granted under those earlier versions. See [LICENSE](LICENSE) for the transition notice.
