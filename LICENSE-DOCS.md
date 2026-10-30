@@ -1,11 +1,13 @@
-# Documentation and learning materials license
+# Documentation and learning materials licence
 
-Original documentation, learning notes, explanations, and original architecture diagrams in this repository are licensed under the **Creative Commons Attribution 4.0 International (CC BY 4.0)** license.
+**Licence: Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0).**
 
-You may share and adapt this material, including commercially, provided you give appropriate credit, link to the license, and indicate if changes were made.
+You may share and adapt original documentation, learning notes, explanations, and original diagrams covered by this notice, provided you give appropriate attribution, link to the licence, indicate changes, and use the material only for non-commercial purposes.
 
-Full license: https://creativecommons.org/licenses/by/4.0/legalcode
+**Commercial or business use requires prior written permission from the copyright holder.** This includes commercial redistribution, resale, paid training or consulting deliverables, and incorporation into a commercial product or service, subject to the exact licence terms.
 
-This notice applies only to original materials created for this repository. Third-party trademarks, product names, excerpts, screenshots, icons, fonts, images, and other third-party materials remain subject to their respective owners' rights and license terms. Do not assume they are covered by this license.
+Full legal code: https://creativecommons.org/licenses/by-nc/4.0/legalcode
 
-Where a file contains its own license or attribution notice, that file-specific notice takes precedence.
+This notice covers only original material the repository owner has the right to license. Third-party trademarks, vendor documentation, screenshots, excerpts, icons, fonts, images, dependencies, and other third-party content remain subject to their owners' terms.
+
+This is a non-commercial licence, not an OSI-approved open-source licence. Request a separate written licence for commercial permissions.
