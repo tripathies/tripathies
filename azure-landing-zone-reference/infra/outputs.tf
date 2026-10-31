@@ -40,7 +40,7 @@ output "optional_test_vm_id" {
 }
 
 output "private_network_access_note" {
-  value = "Public network access is disabled for App Service, Functions, Cosmos DB and Key Vault. Storage has a firewall-denied public endpoint with only the configured Terraform runner /32 allowed; workload traffic uses Private Endpoints and managed identity."
+  value = "Public network access is disabled for App Service, Functions, Cosmos DB and Key Vault. Storage has a firewall-denied public endpoint with only the configured Terraform runner IPv4 address allowed; workload traffic uses Private Endpoints and managed identity."
 }
 
 output "storage_account_id" {
