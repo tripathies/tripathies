@@ -65,7 +65,7 @@ resource "azurerm_function_app_flex_consumption" "orders" {
   service_plan_id     = azurerm_service_plan.functions.id
 
   storage_container_type      = "blobContainer"
-  storage_container_endpoint  = format("%s%s", azurerm_storage_account.workload.primary_blob_endpoint, azurerm_storage_container.function_package.name)
+  storage_container_endpoint  = format("%s/%s", trimsuffix(azurerm_storage_account.workload.primary_blob_endpoint, "/"), azurerm_storage_container.function_package.name)
   storage_authentication_type = "SystemAssignedIdentity"
   runtime_name                = "node"
   runtime_version             = "22"
@@ -79,7 +79,6 @@ resource "azurerm_function_app_flex_consumption" "orders" {
   }
 
   app_settings = {
-    AzureWebJobsStorage                   = ""
     AzureWebJobsStorage__accountName      = azurerm_storage_account.workload.name
     AzureWebJobsStorage__credential       = "managedidentity"
     OrdersQueue__queueServiceUri          = format("https://%s.queue.core.windows.net", azurerm_storage_account.workload.name)
