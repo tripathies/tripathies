@@ -1,4 +1,4 @@
-# Azure Landing Zone & LittleNest Workload Reference
+# Azure Workload Landing Zone Code Reference — LittleNest Kidswear
 
 > **A public, hands-on code reference for learning Azure architecture.** The companion [Azure Master Vault](https://github.com/tripathies/azure-master-vault) explains the services and concepts. This project shows how to assemble selected services into a deployable workload, run the application, validate the network and identity paths, and clean up.
 
@@ -71,6 +71,8 @@ azure-landing-zone-reference/
 ## 1. Prerequisites
 
 - An Azure non-production subscription with permission to create the resources in this lab.
+- A deployment identity with resource creation rights and permission to create role assignments (for example, Contributor plus User Access Administrator or Role Based Access Control Administrator at the lab scope).
+- For Terraform-managed Storage data-plane objects with shared-key access disabled, the deploying identity needs appropriate Storage Blob and Queue data roles. The AzureRM provider is configured to use Entra ID for Storage data-plane operations.
 - Azure CLI.
 - Terraform 1.9 or later.
 - Node.js 22 LTS and npm.
@@ -130,24 +132,24 @@ Terraform creates no resources until apply is run. The default plan does not cre
 
 ## 5. Deploy the application code
 
-After infrastructure is deployed, publish the website:
+After infrastructure is deployed, run application deployment from a workstation with private network connectivity to the VNet (for example, a VPN-connected workstation). Public network access is disabled, including App Service and Functions SCM deployment endpoints. An internet-only laptop or GitHub-hosted runner cannot reach those private deployment endpoints. Publish the website:
 
 ~~~powershell
 cd ../app/web
-npm ci
+npm install --omit=dev
 Compress-Archive -Path * -DestinationPath webapp.zip -Force
-az webapp deploy --resource-group "<resource-group-output>" --name "<web-app-output>" --src-path webapp.zip --type zip
+
 ~~~
 
-Publish the background worker using Azure Functions Core Tools:
+Publish the background worker using Azure Functions Core Tools from the same private-connected workstation:
 
 ~~~powershell
 cd ../functions
 npm install
-func azure functionapp publish "<function-app-output>"
+
 ~~~
 
-Flex Consumption deployment uses a package stored in Blob Storage. Confirm the deployment package, Function host status and queue trigger health after publication.
+Flex Consumption deployment uses a package stored in Blob Storage. Confirm the deployment package, Function host status and queue trigger health after publication. Managed-identity role assignments can take several minutes to propagate.
 
 ## 6. Seed sample products and test data access
 
