@@ -59,3 +59,11 @@ resource "azurerm_role_assignment" "function_table_contributor" {
   principal_id         = azurerm_function_app_flex_consumption.orders.identity[0].principal_id
   principal_type       = "ServicePrincipal"
 }
+
+# Flex Consumption host storage additionally needs this management-plane role.
+resource "azurerm_role_assignment" "function_storage_account_contributor" {
+  scope                = azurerm_storage_account.workload.id
+  role_definition_name = "Storage Account Contributor"
+  principal_id         = azurerm_function_app_flex_consumption.orders.identity[0].principal_id
+  principal_type       = "ServicePrincipal"
+}
