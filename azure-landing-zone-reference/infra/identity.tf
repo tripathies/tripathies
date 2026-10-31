@@ -5,7 +5,7 @@ resource "azurerm_cosmosdb_sql_role_assignment" "web_app_data" {
   account_name        = azurerm_cosmosdb_account.workload.name
   role_definition_id  = format("%s/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002", azurerm_cosmosdb_account.workload.id)
   principal_id        = azurerm_linux_web_app.storefront.identity[0].principal_id
-  scope               = azurerm_cosmosdb_account.workload.id
+  scope               = format("%s/dbs/%s", azurerm_cosmosdb_account.workload.id, azurerm_cosmosdb_sql_database.workload.name)
 }
 
 resource "azurerm_role_assignment" "web_app_key_vault_secrets" {
@@ -59,4 +59,14 @@ resource "azurerm_role_assignment" "function_storage_account_contributor" {
   role_definition_name = "Storage Account Contributor"
   principal_id         = azurerm_function_app_flex_consumption.orders.identity[0].principal_id
   principal_type       = "ServicePrincipal"
+}
+
+# The Terraform caller needs to seed the demo catalogue and validate Cosmos access.
+# Scope is limited to the LittleNest database rather than the whole account.
+resource "azurerm_cosmosdb_sql_role_assignment" "deployer_data" {
+  resource_group_name = azurerm_resource_group.workload.name
+  account_name        = azurerm_cosmosdb_account.workload.name
+  role_definition_id  = format("%s/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002", azurerm_cosmosdb_account.workload.id)
+  principal_id        = data.azurerm_client_config.current.object_id
+  scope               = format("%s/dbs/%s", azurerm_cosmosdb_account.workload.id, azurerm_cosmosdb_sql_database.workload.name)
 }
