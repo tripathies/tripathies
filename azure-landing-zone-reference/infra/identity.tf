@@ -29,7 +29,7 @@ resource "azurerm_cosmosdb_sql_role_assignment" "function_data" {
   account_name        = azurerm_cosmosdb_account.workload.name
   role_definition_id  = format("%s/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002", azurerm_cosmosdb_account.workload.id)
   principal_id        = azurerm_function_app_flex_consumption.orders.identity[0].principal_id
-  scope               = azurerm_cosmosdb_account.workload.id
+  scope               = format("%s/dbs/%s", azurerm_cosmosdb_account.workload.id, azurerm_cosmosdb_sql_database.workload.name)
 }
 
 resource "azurerm_role_assignment" "function_blob_owner" {
