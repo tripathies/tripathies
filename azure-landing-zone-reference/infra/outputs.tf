@@ -42,3 +42,7 @@ output "optional_test_vm_id" {
 output "private_network_access_note" {
   value = "Public network access is disabled for App Service, Functions, Cosmos DB, Key Vault and Storage. Test from a connected private network."
 }
+
+output "storage_account_id" {
+  value = azurerm_storage_account.workload.id
+}
