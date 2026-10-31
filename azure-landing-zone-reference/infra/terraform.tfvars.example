@@ -1,0 +1,17 @@
+# Copy to terraform.tfvars and set your own non-production subscription ID.
+# terraform.tfvars is ignored by the project .gitignore.
+subscription_id = "00000000-0000-0000-0000-000000000000"
+location        = "centralindia"
+project         = "littlenest"
+environment     = "nonprod"
+owner           = "replace-with-your-owner-tag"
+cost_center     = "learning"
+
+# Only request the Cosmos DB Free Tier if this subscription is eligible
+# and does not already have another Free Tier account.
+enable_cosmos_free_tier = true
+
+# Optional private Linux test VM. Keep false for the default low-cost deployment.
+vm_enabled = false
+vm_size    = "Standard_B1s"
+# vm_admin_ssh_public_key = "ssh-ed25519 AAAA... your-public-key"
