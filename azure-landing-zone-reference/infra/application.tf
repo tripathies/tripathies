@@ -80,7 +80,6 @@ resource "azurerm_function_app_flex_consumption" "orders" {
   }
 
   app_settings = {
-    AzureWebJobsStorage                  = ""
     AzureWebJobsStorage__accountName      = azurerm_storage_account.workload.name
     AzureWebJobsStorage__credential       = "managedidentity"
     OrdersQueue__queueServiceUri          = format("https://%s.queue.core.windows.net", azurerm_storage_account.workload.name)
