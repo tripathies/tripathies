@@ -90,7 +90,7 @@ $env:LOCAL_DEMO_MODE = "true"
 npm start
 ~~~
 
-Open http://localhost:3000. The storefront uses the bundled sample product catalogue and an in-memory demo checkout when LOCAL_DEMO_MODE=true. No Azure credentials or Azure resources are required for this mode.
+Open http://localhost:3000. The storefront uses the bundled sample product catalogue and an in-memory demo checkout when LOCAL_DEMO_MODE=true. Run `npm test` in another terminal to execute the local API smoke tests. No Azure credentials or Azure resources are required for this mode.
 
 ## 3. Verify Azure context before Terraform
 
@@ -114,7 +114,7 @@ cd infra
 Copy-Item terraform.tfvars.example terraform.tfvars
 # Set the exact non-production subscription_id, terraform_runner_public_ip and deployer_principal_type.
 terraform init
-terraform fmt -check
+terraform fmt -recursive
 terraform validate
 terraform plan
 ~~~
@@ -139,7 +139,7 @@ $publicIp = (Invoke-RestMethod -Uri "https://api.ipify.org").Trim()
 (Get-Content terraform.tfvars) -replace 'terraform_runner_public_ip\s*=\s*".*"', "terraform_runner_public_ip = `"$publicIp`"" | Set-Content terraform.tfvars
 ~~~
 
-This only works when the address returned by the lookup is the same egress address used to reach Azure Storage. If you use a corporate proxy, VPN or NAT, use the egress IP your network team confirms.
+This only works when the address returned by the lookup is the same egress address used to reach Azure Storage. If you use a corporate proxy, VPN or NAT, use the egress IP your network team confirms. Azure Storage IP rules do not restrict requests originating from clients in the same Azure region; for an Azure-hosted Terraform runner in that region, use a private runner/network path instead.
 
 After reviewing the plan, bootstrap only the resource group and Storage account:
 
@@ -157,7 +157,7 @@ az role assignment create --assignee-object-id $deployerObjectId --assignee-prin
 az role assignment create --assignee-object-id $deployerObjectId --assignee-principal-type User --role "Storage Queue Data Contributor" --scope $storageId
 ~~~
 
-For service-principal or workload-identity deployments, use that identity's object ID and principal type instead, and set deployer_principal_type = "ServicePrincipal" in terraform.tfvars. For interactive az login, keep deployer_principal_type = "User". The caller also needs permission to create role assignments (for example, User Access Administrator or Role Based Access Control Administrator at the relevant scope).
+For service-principal or workload-identity deployments, use that identity's object ID and principal type instead, and set deployer_principal_type = "ServicePrincipal" in terraform.tfvars. For interactive az login, keep deployer_principal_type = "User". The caller also needs permission to create role assignments (for example, User Access Administrator or Role Based Access Control Administrator at the relevant scope). Set `deployer_principal_type` to `User` for interactive Azure CLI login, or `ServicePrincipal` when Terraform runs as a service principal/workload identity.
 
 Now create and inspect a fresh full plan:
 
