@@ -27,6 +27,7 @@ Service names should resolve through configured private DNS zones to private add
 ## Identity validation
 
 - App Service and Function App system-assigned identities exist.
+- If the optional banner exercise is enabled, the App Service identity can read the synthetic Key Vault secret and no secret value is stored in app settings.
 - App Service can read Cosmos DB and send a Storage Queue message using its identity.
 - Function App can receive a queue message and update the order document.
 - Neither application contains account keys, SAS tokens or connection-string secrets.
