@@ -69,12 +69,12 @@ variable "additional_tags" {
   default     = {}
 }
 
-variable "terraform_runner_ip_cidr" {
-  description = "The public IPv4 /32 used by the Terraform workstation to bootstrap Storage data-plane resources. Replace the example value."
+variable "terraform_runner_public_ip" {
+  description = "The public IPv4 address seen by Azure Storage for the Terraform workstation. Supply the address without a CIDR suffix."
   type        = string
 
   validation {
-    condition     = can(cidrnetmask(var.terraform_runner_ip_cidr)) && endswith(var.terraform_runner_ip_cidr, "/32")
-    error_message = "terraform_runner_ip_cidr must be a valid single IPv4 address in /32 CIDR notation."
+    condition     = can(cidrnetmask("${var.terraform_runner_public_ip}/32"))
+    error_message = "terraform_runner_public_ip must be a valid IPv4 address without a CIDR suffix."
   }
 }
