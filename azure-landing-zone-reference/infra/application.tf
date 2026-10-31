@@ -32,6 +32,7 @@ resource "azurerm_linux_web_app" "storefront" {
 
   app_settings = {
     NODE_ENV                   = "production"
+    SCM_DO_BUILD_DURING_DEPLOYMENT = "true"
     LOCAL_DEMO_MODE            = "false"
     COSMOS_ENDPOINT            = azurerm_cosmosdb_account.workload.endpoint
     COSMOS_DATABASE            = azurerm_cosmosdb_sql_database.workload.name
@@ -79,6 +80,7 @@ resource "azurerm_function_app_flex_consumption" "orders" {
   }
 
   app_settings = {
+    AzureWebJobsStorage                  = ""
     AzureWebJobsStorage__accountName      = azurerm_storage_account.workload.name
     AzureWebJobsStorage__credential       = "managedidentity"
     OrdersQueue__queueServiceUri          = format("https://%s.queue.core.windows.net", azurerm_storage_account.workload.name)
