@@ -204,7 +204,7 @@ The seed script uses DefaultAzureCredential. Locally, sign in with Azure CLI and
 ~~~powershell
 cd ../../scripts
 npm install
-$env:COSMOS_ENDPOINT = "<cosmos-endpoint-output>"
+$env:COSMOS_ENDPOINT = terraform -chdir=../infra output -raw cosmos_account_endpoint
 $env:COSMOS_DATABASE = "littlenest"
 $env:COSMOS_PRODUCTS_CONTAINER = "products"
 node ./seed-cosmos.mjs
@@ -219,12 +219,12 @@ The web application has an optional banner endpoint that reads a demo-only secre
 Run these commands from a workstation that can resolve and reach the Key Vault private endpoint:
 
 ~~~powershell
-$rg = terraform -chdir=../../infra output -raw resource_group_name
-$web = terraform -chdir=../../infra output -raw web_app_name
-$kv = terraform -chdir=../../infra output -raw key_vault_name
+$rg = terraform -chdir=../infra output -raw resource_group_name
+$web = terraform -chdir=../infra output -raw web_app_name
+$kv = terraform -chdir=../infra output -raw key_vault_name
 
 az keyvault secret set --vault-name $kv --name "store-banner" --value "Welcome to LittleNest Kidswear!"
-az webapp config appsettings set --resource-group $rg --name $web --settings DEMO_BANNER_SECRET_NAME=store-banner
+az webapp config appsettings set --resource-group $rg --name $web --settings DEMO_BANNER_SECRET_NAME=store-bannerbanner
 ~~~
 
 The App Service identity has the Key Vault Secrets User role. The Terraform caller receives Key Vault Secrets Officer at this lab vault only so the exercise can create the synthetic banner value. After configuration, refresh the private storefront; the banner should appear below the catalogue introduction.
