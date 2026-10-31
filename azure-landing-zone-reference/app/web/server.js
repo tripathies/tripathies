@@ -20,7 +20,7 @@ async function getAzureClients(){
   ordersContainer=db.container(process.env.COSMOS_ORDERS_CONTAINER||"orders");
   const {QueueClient}=require("@azure/storage-queue");
   if(!process.env.STORAGE_ACCOUNT_NAME||!process.env.ORDERS_QUEUE_NAME)throw new Error("STORAGE_ACCOUNT_NAME and ORDERS_QUEUE_NAME must be configured.");
-  queueClient=new QueueClient("https://"+process.env.STORAGE_ACCOUNT_NAME+".queue.core.windows.net/"+process.env.ORDERS_QUEUE_NAME,credential,{messageEncoding:"none"});
+  queueClient=new QueueClient("https://"+process.env.STORAGE_ACCOUNT_NAME+".queue.core.windows.net/"+process.env.ORDERS_QUEUE_NAME,credential);
  }
  return {productsContainer,ordersContainer,queueClient};
 }
