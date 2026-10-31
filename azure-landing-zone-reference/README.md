@@ -112,23 +112,58 @@ Stop if the active tenant or subscription ID is not the intended non-production 
 ~~~powershell
 cd infra
 Copy-Item terraform.tfvars.example terraform.tfvars
-# Edit terraform.tfvars and set the exact subscription_id.
+# Edit terraform.tfvars and set the exact non-production subscription_id.
 terraform init
 terraform fmt -check
 terraform validate
+terraform plan
+~~~
+
+Before deploying Functions Flex Consumption, verify that your chosen region supports the Linux Node runtime:
+
+~~~powershell
+az functionapp list-flexconsumption-locations --query "sort_by(@, &name)[].{Region:name}" --output table
+az functionapp list-flexconsumption-runtimes --location centralindia --runtime node --query "[].version" --output tsv
+~~~
+
+If centralindia or Node.js 22 is not listed, change the location or runtime in the project inputs to a supported combination. The preflight script performs the same checks.
+
+### One-time Storage bootstrap for Terraform Entra ID access
+
+This project disables Storage shared-key access and configures the AzureRM provider to use Entra ID for Blob and Queue data-plane operations. Therefore, the identity running Terraform needs Storage data roles before Terraform creates the private container and queue.
+
+After reviewing the plan, bootstrap only the resource group and Storage account:
+
+~~~powershell
+terraform apply -target=azurerm_resource_group.workload -target=azurerm_storage_account.workload
+~~~
+
+Assign the Terraform caller the data-plane permissions needed to manage the lab's private container and queue. This example assumes interactive user login with az login:
+
+~~~powershell
+$storageId = terraform output -raw storage_account_id
+$deployerObjectId = az ad signed-in-user show --query id --output tsv
+
+az role assignment create --assignee-object-id $deployerObjectId --assignee-principal-type User --role "Storage Blob Data Contributor" --scope $storageId
+az role assignment create --assignee-object-id $deployerObjectId --assignee-principal-type User --role "Storage Queue Data Contributor" --scope $storageId
+~~~
+
+For service-principal or workload-identity deployments, use that identity's object ID and principal type instead. The caller also needs permission to create role assignments (for example, User Access Administrator or Role Based Access Control Administrator at the relevant scope).
+
+Now create and inspect a fresh full plan:
+
+~~~powershell
 terraform plan -out tfplan
 terraform show tfplan
 ~~~
 
-Review every resource and expected charge. In particular, check the Private Endpoint count, App Service Basic plan, Cosmos DB Free Tier eligibility and the selected region.
-
-Only then apply:
+Review resource names, private endpoint count, the App Service Basic plan, Cosmos DB Free Tier eligibility and recurring charges. Only then apply the reviewed plan:
 
 ~~~powershell
 terraform apply tfplan
 ~~~
 
-Terraform creates no resources until apply is run. The default plan does not create the optional VM.
+Commit the generated .terraform.lock.hcl file to the project after the first successful init so later learners use the same provider selections. The default plan does not create the optional VM.
 
 ## 5. Deploy the application code
 
