@@ -1,0 +1,2 @@
+{"name":"littlenest-storefront","version":"1.0.0","private":true,"description":"LittleNest Kidswear Azure learning storefront","main":"server.js","scripts":{"start":"node server.js","check":"node --check server.js","test":"node --test"},"engines":{"node":">=22"},"dependencies":{"@azure/cosmos":"^4.9.0","@azure/identity":"^4.10.0",
+    "@azure/keyvault-secrets":"^4.9.0","@azure/storage-queue":"^12.27.0"}}

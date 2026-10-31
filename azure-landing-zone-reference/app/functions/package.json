@@ -1,0 +1,1 @@
+{"name":"littlenest-order-worker","version":"1.0.0","private":true,"description":"Azure Functions queue worker for LittleNest sample orders","main":"src/index.js","scripts":{"start":"func start","check":"node --check src/index.js"},"engines":{"node":">=22"},"dependencies":{"@azure/cosmos":"^4.9.0","@azure/functions":"^4.11.0","@azure/identity":"^4.10.0"}}

@@ -1,0 +1,1 @@
+{"name":"littlenest-lab-scripts","private":true,"type":"module","scripts":{"seed":"node seed-cosmos.mjs"},"dependencies":{"@azure/cosmos":"^4.9.0","@azure/identity":"^4.10.0"}}

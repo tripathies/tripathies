@@ -1,0 +1,25 @@
+# Terraform
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.*
+**/tfplan
+**/crash.log
+**/crash.*.log
+**/override.tf
+**/override.tf.json
+**/*_override.tf
+**/*_override.tf.json
+
+# Local configuration and secrets
+**/terraform.tfvars
+**/terraform.tfvars.json
+**/local.settings.json
+**/.env
+**/.env.*
+!**/.env.example
+
+# Node.js build output and dependencies
+**/node_modules/
+**/npm-debug.log*
+**/webapp.zip
+**/dist/

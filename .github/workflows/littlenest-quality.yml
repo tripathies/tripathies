@@ -1,0 +1,66 @@
+name: littlenest-quality
+
+on:
+  pull_request:
+    paths:
+      - "azure-landing-zone-reference/**"
+      - ".github/workflows/littlenest-quality.yml"
+  push:
+    branches: [main]
+    paths:
+      - "azure-landing-zone-reference/**"
+      - ".github/workflows/littlenest-quality.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: littlenest-quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  application:
+    name: Node.js application checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        app:
+          - azure-landing-zone-reference/app/web
+          - azure-landing-zone-reference/app/functions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install dependencies
+        working-directory: ${{ matrix.app }}
+        run: npm install --no-audit --no-fund
+      - name: Syntax check
+        working-directory: ${{ matrix.app }}
+        run: npm run check
+      - name: Local storefront smoke tests
+        if: ${{ matrix.app == 'azure-landing-zone-reference/app/web' }}
+        working-directory: ${{ matrix.app }}
+        run: npm test
+
+  terraform:
+    name: Terraform format and validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: azure-landing-zone-reference/infra
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.8"
+          terraform_wrapper: false
+      - name: Check formatting
+        run: terraform fmt -recursive
+      - name: Initialize without backend
+        run: terraform init -backend=false -input=false
+      - name: Validate configuration
+        run: terraform validate
