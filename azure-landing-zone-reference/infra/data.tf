@@ -23,11 +23,6 @@ resource "azurerm_storage_container" "function_package" {
   storage_account_id    = azurerm_storage_account.workload.id
   container_access_type = "private"
 }
-resource "azurerm_storage_container" "product_media" {
-  name                  = "product-media"
-  storage_account_id    = azurerm_storage_account.workload.id
-  container_access_type = "private"
-}
 resource "azurerm_storage_queue" "orders" {
   name                 = "orders"
   storage_account_name = azurerm_storage_account.workload.name
