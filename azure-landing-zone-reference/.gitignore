@@ -1,4 +1,4 @@
-# Terraform state, plans and local provider data
+# Terraform
 **/.terraform/
 **/*.tfstate
 **/*.tfstate.*
@@ -10,14 +10,15 @@
 **/*_override.tf
 **/*_override.tf.json
 
-# Local configuration and environment secrets
+# Local configuration and secrets
 **/terraform.tfvars
 **/terraform.tfvars.json
+**/local.settings.json
 **/.env
 **/.env.*
 !**/.env.example
 
-# Node.js
+# Node.js build output and dependencies
 **/node_modules/
 **/npm-debug.log*
 **/webapp.zip
