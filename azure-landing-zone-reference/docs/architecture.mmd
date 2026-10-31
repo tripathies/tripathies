@@ -1,0 +1,51 @@
+flowchart TB
+    subgraph SUB["Existing Non-Production Subscription — Profile A"]
+      subgraph VNET["LittleNest Workload VNet · 10.70.0.0/16"]
+        APPINT["App Service VNet Integration Subnet"]
+        FUNCINT["Functions Flex Integration Subnet"]
+        PESUB["Private Endpoint Subnet"]
+        VM["Optional Private Test VM"]
+        WEBPE["Web App Private Endpoint"]
+        FUNCPE["Function App Private Endpoint"]
+        COSPE["Cosmos DB Private Endpoint"]
+        KVPE["Key Vault Private Endpoint"]
+        BLOBPE["Storage Blob Private Endpoint"]
+        QUEUEPE["Storage Queue Private Endpoint"]
+        TABLEPE["Storage Table Private Endpoint"]
+        DNS["Private DNS Zones + VNet Links"]
+      end
+      WEB["Linux App Service · Node.js"]
+      FUNC["Azure Functions Flex Consumption · Node.js"]
+      COS["Cosmos DB for NoSQL · Free Tier if eligible"]
+      KV["Key Vault · RBAC"]
+      SA["Storage LRS · Blob + Queue + Function host"]
+      QUEUE["orders queue"]
+    end
+    TEST["Private test client / VM Run Command"] --> WEBPE --> WEB
+    WEB --> COSPE --> COS
+    WEB --> KVPE --> KV
+    WEB --> QUEUEPE --> QUEUE
+    QUEUE --> FUNC
+    FUNCPE -. private inbound endpoint .- FUNC
+    FUNC --> COSPE
+    FUNC --> BLOBPE
+    FUNC --> TABLEPE
+    DNS -. DNS resolution .- WEBPE
+    DNS -. DNS resolution .- FUNCPE
+    DNS -. DNS resolution .- COSPE
+    DNS -. DNS resolution .- KVPE
+    DNS -. DNS resolution .- BLOBPE
+    DNS -. DNS resolution .- QUEUEPE
+    DNS -. DNS resolution .- TABLEPE
+    APPINT -. outbound VNet integration .- WEB
+    FUNCINT -. outbound VNet integration .- FUNC
+    PESUB --- WEBPE
+    PESUB --- FUNCPE
+    PESUB --- COSPE
+    PESUB --- KVPE
+    PESUB --- BLOBPE
+    PESUB --- QUEUEPE
+    PESUB --- TABLEPE
+    SA --- QUEUE
+    VM -. private validation .-> DNS
+    NOTE["No production subscription, hub, public ingress, Front Door Premium or Container Apps are deployed by default."]
