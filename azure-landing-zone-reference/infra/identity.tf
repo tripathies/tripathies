@@ -70,3 +70,11 @@ resource "azurerm_cosmosdb_sql_role_assignment" "deployer_data" {
   principal_id        = data.azurerm_client_config.current.object_id
   scope               = format("%s/dbs/%s", azurerm_cosmosdb_account.workload.id, azurerm_cosmosdb_sql_database.workload.name)
 }
+
+# Optional Key Vault exercise: the Terraform caller can add a synthetic banner secret.
+resource "azurerm_role_assignment" "deployer_key_vault_secrets_officer" {
+  scope                = azurerm_key_vault.workload.id
+  role_definition_name = "Key Vault Secrets Officer"
+  principal_id         = data.azurerm_client_config.current.object_id
+  principal_type       = "ServicePrincipal"
+}
