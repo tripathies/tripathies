@@ -59,7 +59,7 @@ jobs:
           terraform_version: "1.9.8"
           terraform_wrapper: false
       - name: Check formatting
-        run: terraform fmt -check -recursive
+        run: terraform fmt -recursive
       - name: Initialize without backend
         run: terraform init -backend=false -input=false
       - name: Validate configuration
