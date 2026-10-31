@@ -68,3 +68,13 @@ variable "additional_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "terraform_runner_ip_cidr" {
+  description = "The public IPv4 /32 used by the Terraform workstation to bootstrap Storage data-plane resources. Replace the example value."
+  type        = string
+
+  validation {
+    condition     = can(cidrnetmask(var.terraform_runner_ip_cidr)) && endswith(var.terraform_runner_ip_cidr, "/32")
+    error_message = "terraform_runner_ip_cidr must be a valid single IPv4 address in /32 CIDR notation."
+  }
+}
