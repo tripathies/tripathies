@@ -78,3 +78,14 @@ variable "terraform_runner_public_ip" {
     error_message = "terraform_runner_public_ip must be a valid IPv4 address without a CIDR suffix."
   }
 }
+
+variable "deployer_principal_type" {
+  description = "Principal type for the Terraform caller in Azure RBAC: User for az login, ServicePrincipal for CI/CD."
+  type        = string
+  default     = "User"
+
+  validation {
+    condition     = contains(["User", "ServicePrincipal"], var.deployer_principal_type)
+    error_message = "deployer_principal_type must be User or ServicePrincipal."
+  }
+}
