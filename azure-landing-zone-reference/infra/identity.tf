@@ -12,7 +12,7 @@ resource "azurerm_role_assignment" "web_app_key_vault_secrets" {
   scope                = azurerm_key_vault.workload.id
   role_definition_name = "Key Vault Secrets User"
   principal_id         = azurerm_linux_web_app.storefront.identity[0].principal_id
-  principal_type       = "ServicePrincipal"
+  principal_type       = var.deployer_principal_type
 }
 
 resource "azurerm_role_assignment" "web_app_queue_sender" {
