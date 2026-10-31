@@ -49,7 +49,7 @@ async function createOrder(input){
  if(LOCAL_DEMO_MODE){order.status="Demo accepted";return order;}
  const c=await getAzureClients();
  await c.ordersContainer.items.create(order);
- await c.queueClient.sendMessage(Buffer.from(JSON.stringify({orderId:order.id,createdAt:order.createdAt})).toString("base64"));
+ await c.queueClient.sendMessage(JSON.stringify({orderId:order.id,createdAt:order.createdAt}));
  return order;
 }
 function sendJson(res,status,value){res.writeHead(status,{"content-type":"application/json; charset=utf-8","cache-control":"no-store","x-content-type-options":"nosniff"});res.end(JSON.stringify(value));}
