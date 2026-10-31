@@ -25,4 +25,21 @@ Write-Host ""
 Write-Host "Location check: $Location"
 az account list-locations --query "[?name=='$Location'].{name:name,displayName:displayName}" --output table
 Write-Host ""
+$flexLocations = az functionapp list-flexconsumption-locations --query "[].name" --output tsv 2>$null
+if ($LASTEXITCODE -ne 0 -or -not $flexLocations) {
+    Write-Warning "Could not retrieve the current Flex Consumption region list. Check Azure CLI version and network access."
+} elseif ($flexLocations -notcontains $Location) {
+    throw "Region $Location is not currently listed for Functions Flex Consumption. Choose a region returned by az functionapp list-flexconsumption-locations."
+} else {
+    Write-Host "Flex Consumption region: supported"
+    $nodeVersions = az functionapp list-flexconsumption-runtimes --location $Location --runtime node --query "[].version" --output tsv 2>$null
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "Node runtime versions in $($Location): $($nodeVersions -join ', ')"
+        if ($nodeVersions -notcontains "22") {
+            throw "Node.js 22 is not listed for Flex Consumption in $Location. Update the runtime version or choose another supported region."
+        }
+    } else {
+        Write-Warning "Could not verify Node.js runtime availability for Flex Consumption."
+    }
+}
 Write-Host "Preflight complete. No provider was registered and no resource was deployed."
