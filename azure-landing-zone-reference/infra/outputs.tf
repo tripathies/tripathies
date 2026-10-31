@@ -46,3 +46,7 @@ output "private_network_access_note" {
 output "storage_account_id" {
   value = azurerm_storage_account.workload.id
 }
+
+output "key_vault_name" {
+  value = azurerm_key_vault.workload.name
+}
