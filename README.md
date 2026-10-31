@@ -157,6 +157,17 @@ currently_architecting:
 ---
 
 <!-- ░░░░░░░░░░░ CURRENTLY WORKING ON ░░░░░░░░░░░ -->
+<h3 align="center">🏗️ Azure Architecture & Hands-on Learning</h3>
+
+| Resource | Purpose |
+|---|---|
+| [Azure Master Vault](https://github.com/tripathies/azure-master-vault) | Theory, Azure component catalogue, architecture concepts and reference diagrams |
+| [Azure Workload Landing Zone Code Reference — LittleNest Kidswear](./azure-landing-zone-reference/) | Public hands-on example: Node.js storefront, Azure Functions worker, Terraform infrastructure, private networking, managed identity, deployment and validation |
+
+The Vault explains **what the Azure services are**. The LittleNest project demonstrates **how to connect selected services into a working application**, with source code and infrastructure learners can inspect and test.
+
+---
+
 <h3 align="center">🔭 Currently Working On</h3>
 
 ```diff
