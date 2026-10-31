@@ -1,0 +1,24 @@
+# Terraform state, plans and local provider data
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.*
+**/tfplan
+**/crash.log
+**/crash.*.log
+**/override.tf
+**/override.tf.json
+**/*_override.tf
+**/*_override.tf.json
+
+# Local configuration and environment secrets
+**/terraform.tfvars
+**/terraform.tfvars.json
+**/.env
+**/.env.*
+!**/.env.example
+
+# Node.js
+**/node_modules/
+**/npm-debug.log*
+**/webapp.zip
+**/dist/
