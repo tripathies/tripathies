@@ -7,7 +7,7 @@ const productsSeed=[
 {id:"hoodie-003",name:"Cloud Club Hoodie",category:"Outerwear",size:["3Y","4Y","5Y","6Y"],colour:"Lavender",price:999,image:"☁️",description:"A cosy layer for cooler evenings."},
 {id:"shorts-004",name:"Playtime Shorts",category:"Bottoms",size:["2Y","3Y","4Y","5Y"],colour:"Coral",price:449,image:"🧡",description:"Easy-fit shorts for busy little days."}
 ];
-let cosmos,productsContainer,ordersContainer,queueClient;
+let cosmos,productsContainer,ordersContainer,queueClient,secretClient;
 async function getAzureClients(){
  if(LOCAL_DEMO_MODE)return null;
  if(!process.env.COSMOS_ENDPOINT||!process.env.COSMOS_DATABASE)throw new Error("COSMOS_ENDPOINT and COSMOS_DATABASE must be configured.");
@@ -20,7 +20,7 @@ async function getAzureClients(){
   ordersContainer=db.container(process.env.COSMOS_ORDERS_CONTAINER||"orders");
   const {QueueClient}=require("@azure/storage-queue");
   if(!process.env.STORAGE_ACCOUNT_NAME||!process.env.ORDERS_QUEUE_NAME)throw new Error("STORAGE_ACCOUNT_NAME and ORDERS_QUEUE_NAME must be configured.");
-  queueClient=new QueueClient("https://"+process.env.STORAGE_ACCOUNT_NAME+".queue.core.windows.net/"+process.env.ORDERS_QUEUE_NAME,credential);
+  queueClient=new QueueClient("https://"+process.env.STORAGE_ACCOUNT_NAME+".queue.core.windows.net/"+process.env.ORDERS_QUEUE_NAME,credential,{messageEncoding:"none"});
  }
  return {productsContainer,ordersContainer,queueClient};
 }
@@ -28,6 +28,14 @@ async function listProducts(){
  if(LOCAL_DEMO_MODE)return productsSeed;
  const c=await getAzureClients(),r=await c.productsContainer.items.query("SELECT * FROM c").fetchAll();
  return r.resources;
+}
+async function getOptionalBanner(){
+ if(!process.env.KEY_VAULT_URL||!process.env.DEMO_BANNER_SECRET_NAME)return null;
+ const {DefaultAzureCredential}=require("@azure/identity");
+ const {SecretClient}=require("@azure/keyvault-secrets");
+ if(!secretClient)secretClient=new SecretClient(process.env.KEY_VAULT_URL,new DefaultAzureCredential());
+ const result=await secretClient.getSecret(process.env.DEMO_BANNER_SECRET_NAME);
+ return result.value||null;
 }
 async function createOrder(input){
  const allowed=new Map(productsSeed.map(p=>[p.id,p]));
@@ -51,6 +59,7 @@ const server=http.createServer(async(req,res)=>{
   const url=new URL(req.url,"http://localhost");
   if(req.method==="GET"&&url.pathname==="/healthz")return sendJson(res,200,{status:"ok",mode:LOCAL_DEMO_MODE?"local-demo":"azure"});
   if(req.method==="GET"&&url.pathname==="/api/products")return sendJson(res,200,{products:await listProducts()});
+  if(req.method==="GET"&&url.pathname==="/api/banner")return sendJson(res,200,{banner:LOCAL_DEMO_MODE?null:await getOptionalBanner()});
   if(req.method==="POST"&&url.pathname==="/api/orders")return sendJson(res,201,{order:await createOrder(await readJson(req))});
   if(req.method==="GET"&&url.pathname==="/"){
    const file=path.join(__dirname,"public","index.html");
