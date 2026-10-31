@@ -46,7 +46,7 @@ The App Service Basic plan, private endpoints, Storage operations and any Cosmos
 
 ## Architecture boundary
 
-The code uses private access as the default: public network access is disabled for the App Service, Function App, Cosmos DB, Key Vault and Storage account. That means the deployed web app is **not directly reachable from the public internet**. Run the website locally in demo mode for a public-facing learning preview, or access the deployed private app from a client with a route into the VNet. The optional test VM can be used for private DNS and connectivity checks through Azure Run Command without opening SSH to the internet.
+The code uses private access as the default: public network access is disabled for the App Service, Function App, Cosmos DB and Key Vault. Storage has a firewall-denied public endpoint with a single explicit Terraform-runner IP rule for bootstrap; all workload storage access uses Private Endpoints and managed identities. That means the deployed web app is **not directly reachable from the public internet**. Run the website locally in demo mode for a public-facing learning preview, or access the deployed private app from a client with a route into the VNet. The optional test VM can be used for private DNS and connectivity checks through Azure Run Command without opening SSH to the internet.
 
 The default lab does not include Front Door Premium, Azure Firewall, NAT Gateway, Bastion, Container Apps, production subscriptions or cross-region recovery. Those are documented as future extensions rather than silently added to a low-cost lab.
 
@@ -72,7 +72,7 @@ azure-landing-zone-reference/
 
 - An Azure non-production subscription with permission to create the resources in this lab.
 - A deployment identity with resource creation rights and permission to create role assignments (for example, Contributor plus User Access Administrator or Role Based Access Control Administrator at the lab scope).
-- For Terraform-managed Storage data-plane objects with shared-key access disabled, the deploying identity needs appropriate Storage Blob and Queue data roles. The AzureRM provider is configured to use Entra ID for Storage data-plane operations.
+- For Terraform-managed Storage data-plane objects with shared-key access disabled, the deploying identity needs appropriate Storage Blob and Queue data roles. The AzureRM provider is configured to use Entra ID for Storage data-plane operations. Storage's public endpoint is firewall-denied except for the one public IP address you supply for the Terraform runner; this is a bootstrap path, not the application data path.
 - Azure CLI.
 - Terraform 1.9 or later.
 - Node.js 22 LTS and npm.
@@ -131,6 +131,15 @@ If centralindia or Node.js 22 is not listed, change the location or runtime in t
 ### One-time Storage bootstrap for Terraform Entra ID access
 
 This project disables Storage shared-key access and configures the AzureRM provider to use Entra ID for Blob and Queue data-plane operations. Therefore, the identity running Terraform needs Storage data roles before Terraform creates the private container and queue.
+
+First discover the public egress IPv4 address Azure Storage will see (for example, your corporate NAT/VPN egress address, not your laptop's private address). Set that single address in terraform.tfvars without a /32 suffix:
+
+~~~powershell
+$publicIp = (Invoke-RestMethod -Uri "https://api.ipify.org").Trim()
+(Get-Content terraform.tfvars) -replace 'terraform_runner_public_ip\s*=\s*".*"', "terraform_runner_public_ip = `"$publicIp`"" | Set-Content terraform.tfvars
+~~~
+
+This only works when the address returned by the lookup is the same egress address used to reach Azure Storage. If you use a corporate proxy, VPN or NAT, use the egress IP your network team confirms.
 
 After reviewing the plan, bootstrap only the resource group and Storage account:
 
