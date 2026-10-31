@@ -162,7 +162,7 @@ currently_architecting:
 | Resource | Purpose |
 |---|---|
 | [Azure Master Vault](https://github.com/tripathies/azure-master-vault) | Theory, Azure component catalogue, architecture concepts and reference diagrams |
-| [Azure Workload Landing Zone Code Reference — LittleNest Kidswear](./azure-landing-zone-reference/) | Public hands-on example: Node.js storefront, Azure Functions worker, Terraform infrastructure, private networking, managed identity, deployment and validation |
+| [LittleNest Azure Reference](https://github.com/tripathies/azure-master-vault/tree/main/littlenest-azure-reference/) | Hands-on Azure workload project inside the Azure Master Vault: Node.js storefront, Azure Functions worker, Terraform, private networking, managed identity, deployment and validation |
 
 The Vault explains **what the Azure services are**. The LittleNest project demonstrates **how to connect selected services into a working application**, with source code and infrastructure learners can inspect and test.
 
