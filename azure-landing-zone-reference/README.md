@@ -136,9 +136,10 @@ After infrastructure is deployed, run application deployment from a workstation 
 
 ~~~powershell
 cd ../app/web
-npm install --omit=dev
-Compress-Archive -Path * -DestinationPath webapp.zip -Force
-
+Compress-Archive -Path server.js,package.json,public -DestinationPath webapp.zip -Force
+$rg = terraform -chdir=../../infra output -raw resource_group_name
+$web = terraform -chdir=../../infra output -raw web_app_name
+az webapp deploy --resource-group $rg --name $web --src-path webapp.zip --type zip
 ~~~
 
 Publish the background worker using Azure Functions Core Tools from the same private-connected workstation:
@@ -146,7 +147,8 @@ Publish the background worker using Azure Functions Core Tools from the same pri
 ~~~powershell
 cd ../functions
 npm install
-
+$fn = terraform -chdir=../../infra output -raw function_app_name
+func azure functionapp publish $fn
 ~~~
 
 Flex Consumption deployment uses a package stored in Blob Storage. Confirm the deployment package, Function host status and queue trigger health after publication. Managed-identity role assignments can take several minutes to propagate.
