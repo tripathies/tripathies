@@ -22,13 +22,6 @@ resource "azurerm_role_assignment" "web_app_queue_sender" {
   principal_type       = "ServicePrincipal"
 }
 
-resource "azurerm_role_assignment" "web_app_blob_reader" {
-  scope                = azurerm_storage_account.workload.id
-  role_definition_name = "Storage Blob Data Reader"
-  principal_id         = azurerm_linux_web_app.storefront.identity[0].principal_id
-  principal_type       = "ServicePrincipal"
-}
-
 # Function identity: operate the queue trigger and update the sample order record.
 # Flex host storage uses Blob, Queue and Table data-plane permissions.
 resource "azurerm_cosmosdb_sql_role_assignment" "function_data" {
