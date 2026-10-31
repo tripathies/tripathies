@@ -112,7 +112,7 @@ Stop if the active tenant or subscription ID is not the intended non-production 
 ~~~powershell
 cd infra
 Copy-Item terraform.tfvars.example terraform.tfvars
-# Edit terraform.tfvars and set the exact non-production subscription_id.
+# Set the exact non-production subscription_id, terraform_runner_public_ip and deployer_principal_type.
 terraform init
 terraform fmt -check
 terraform validate
@@ -157,7 +157,7 @@ az role assignment create --assignee-object-id $deployerObjectId --assignee-prin
 az role assignment create --assignee-object-id $deployerObjectId --assignee-principal-type User --role "Storage Queue Data Contributor" --scope $storageId
 ~~~
 
-For service-principal or workload-identity deployments, use that identity's object ID and principal type instead. The caller also needs permission to create role assignments (for example, User Access Administrator or Role Based Access Control Administrator at the relevant scope).
+For service-principal or workload-identity deployments, use that identity's object ID and principal type instead, and set deployer_principal_type = "ServicePrincipal" in terraform.tfvars. For interactive az login, keep deployer_principal_type = "User". The caller also needs permission to create role assignments (for example, User Access Administrator or Role Based Access Control Administrator at the relevant scope).
 
 Now create and inspect a fresh full plan:
 
@@ -172,7 +172,7 @@ Review resource names, private endpoint count, the App Service Basic plan, Cosmo
 terraform apply tfplan
 ~~~
 
-Commit the generated .terraform.lock.hcl file to the project after the first successful init so later learners use the same provider selections. The default plan does not create the optional VM.
+Commit the generated infra/.terraform.lock.hcl file to the project after the first successful init so later learners use the same provider selections. The AzureRM and Random provider constraints are pinned to tested versions in versions.tf. The default plan does not create the optional VM.
 
 ## 5. Deploy the application code
 
@@ -212,11 +212,30 @@ node ./seed-cosmos.mjs
 
 When the app is deployed, its system-assigned managed identity reads Cosmos DB and sends order messages to Storage Queue. The Function App's managed identity receives queue messages and updates demo order status. No account keys or connection strings are embedded in the application source.
 
-## 7. Optional private test VM
+## 7. Optional Key Vault secret exercise
+
+The web application has an optional banner endpoint that reads a demo-only secret using its system-assigned managed identity. The secret value is never stored in source code or an app setting.
+
+Run these commands from a workstation that can resolve and reach the Key Vault private endpoint:
+
+~~~powershell
+$rg = terraform -chdir=../../infra output -raw resource_group_name
+$web = terraform -chdir=../../infra output -raw web_app_name
+$kv = terraform -chdir=../../infra output -raw key_vault_name
+
+az keyvault secret set --vault-name $kv --name "store-banner" --value "Welcome to LittleNest Kidswear!"
+az webapp config appsettings set --resource-group $rg --name $web --settings DEMO_BANNER_SECRET_NAME=store-banner
+~~~
+
+The App Service identity has the Key Vault Secrets User role. The Terraform caller receives Key Vault Secrets Officer at this lab vault only so the exercise can create the synthetic banner value. After configuration, refresh the private storefront; the banner should appear below the catalogue introduction.
+
+Do not place real credentials, customer details or payment secrets in this exercise.
+
+## 8. Optional private test VM
 
 The optional VM is disabled by default. To enable it, set vm_enabled=true and provide your SSH **public** key in vm_admin_ssh_public_key. The VM has no public IP. Use Azure VM Run Command to run DNS and HTTPS checks from inside the VNet. Do not add an internet-facing SSH rule.
 
-## 8. Validate private connectivity and identity
+## 9. Validate private connectivity and identity
 
 Use the acceptance checklist in docs/validation.md. At minimum, prove:
 
@@ -227,7 +246,7 @@ Use the acceptance checklist in docs/validation.md. At minimum, prove:
 - The Function worker consumes the order message and updates its status.
 - No application setting or source file contains a storage key, Cosmos key or Key Vault secret value.
 
-## 9. Clean up
+## 10. Clean up
 
 ~~~powershell
 cd infra
