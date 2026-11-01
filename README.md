@@ -4,7 +4,7 @@
 
 <div align="center">
 
-# <img src="https://raw.githubusercontent.com/MartinHeinz/MartinHeinz/master/wave.gif" width="35" alt="wave" /> Hi, I'm Rahul Tripathi
+# 👋 Hi, I'm Rahul Tripathi
 
 
 ### Principal Cloud & Systems Architect @ Amadeus Labs
@@ -60,7 +60,7 @@ currently_architecting:
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/rahul-tripathi-a05a1693)
 [![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:tripathi.rahultripathi1992@gmail.com)
-[![Portfolio](https://img.shields.io/badge/Portfolio-00FF99?style=for-the-badge&logo=google-chrome&logoColor=0D1117)](https://github.com/techtotsandparents-max/rahulsite)
+[![Portfolio](https://img.shields.io/badge/Portfolio-00FF99?style=for-the-badge&logo=google-chrome&logoColor=0D1117)](https://github.com/tripathies)
 
 </div>
 
@@ -138,20 +138,20 @@ currently_architecting:
 <h3 align="center">📊 GitHub Analytics</h3>
 
 <div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=techtotsandparents-max&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=00FF99&text_color=A9B1D6&icon_color=7AA2F7&count_private=true&include_all_commits=true" height="170" alt="GitHub Stats" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=techtotsandparents-max&layout=compact&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=00FF99&text_color=A9B1D6" height="170" alt="Top Languages" />
+  <img src="https://github-stats-extended.vercel.app/api?username=tripathies&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=00FF99&text_color=A9B1D6&icon_color=7AA2F7&count_private=true&include_all_commits=true" height="170" alt="GitHub Stats" />
+  <img src="https://github-stats-extended.vercel.app/api/top-langs/?username=tripathies&layout=compact&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=00FF99&text_color=A9B1D6" height="170" alt="Top Languages" />
 </div>
 
 <br/>
 
 <div align="center">
-  <img src="https://github-readme-streak-stats.herokuapp.com?user=techtotsandparents-max&theme=tokyonight_duo&hide_border=true&background=0D1117&ring=00FF99&fire=FF6B6B&currStreakLabel=00FF99" height="170" alt="GitHub Streak" />
+  <img src="https://streak-stats.demolab.com?user=tripathies&theme=tokyonight_duo&hide_border=true&background=0D1117&ring=00FF99&fire=FF6B6B&currStreakLabel=00FF99" height="170" alt="GitHub Streak" />
 </div>
 
 <br/>
 
 <div align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=techtotsandparents-max&bg_color=0d1117&color=00ff99&line=7aa2f7&point=ff6b6b&area=true&hide_border=true&custom_title=Contributions%20Graph" width="95%" alt="Activity Graph" />
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=tripathies&theme=tokyonight" width="95%" alt="Activity Graph" />
 </div>
 
 ---
@@ -182,7 +182,7 @@ The Vault explains **what the Azure services are**. The LittleNest project demon
 <!-- ░░░░░░░░░░░ FOOTER ░░░░░░░░░░░ -->
 <div align="center">
 
-![Profile Views](https://komarev.com/ghpvc/?username=techtotsandparents-max&color=00ff99&style=for-the-badge&label=PROFILE+VIEWS)
+![Profile Views](https://komarev.com/ghpvc/?username=tripathies&color=00ff99&style=for-the-badge&label=PROFILE+VIEWS)
 
 <br/>
 
@@ -190,7 +190,7 @@ The Vault explains **what the Azure services are**. The LittleNest project demon
 
 ---
 
-⭐ *From [Rahul Tripathi](https://github.com/techtotsandparents-max)*
+⭐ *From [Rahul Tripathi](https://github.com/tripathies)*
 
 <br/>
 
